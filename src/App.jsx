@@ -38,6 +38,7 @@ const PORTFOLIO_DATA = {
     //   { value: "100+", label: "Github Contributions", icon: <Github /> },
       { value: "5+", label: "Certifications Achieved", icon: <CheckCircle /> },
     ],
+    
   },
   skills: [
     { id: 'frontend', title: "Frontend Development", icon: <Code className="w-7 h-7 text-teal-400" />, desc: "Creating stunning user interfaces and experiences.", tags: ["HTML", "CSS", "TailwindCSS", "React.js", "Next.js", "Bootstrap"], items: [["HTML", 90], ["CSS", 90], ["TailwindCSS", 95], ["React.js", 85], ["Next.js", 80], ["Bootstrap", 80]] },
@@ -82,17 +83,16 @@ const PORTFOLIO_DATA = {
 };
 
 
-// --- UTILITIES & EFFECTS ---
-
 // Custom Cursor Glow Effect
 const CustomCursor = ({ theme }) => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isVisible, setIsVisible] = useState(false);
   
-  // Adjusted values for less brightness and blur
-  const color = theme === 'dark' ? 'rgba(6, 7, 6, 0.79)' : 'rgba(5, 5, 5, 0.81)'; // Decreased opacity from .8 to .6/.4
-  const boxShadow = theme === 'dark' ? '0 0 5px #dbdbdfff, 0 0 10px #6366f1' : '0 0 5px #ffa500, 0 0 10px #ffa500'; // Reduced blur spread and intensity
-  const opacity = 0.15; // Global opacity reduced from 0.2 to 0.15
+  // FIX: Increased opacity and reduced blur radius for better visibility
+  const color = theme === 'dark' ? 'rgba(99, 102, 241, 0.8)' : 'rgba(255, 165, 0, 0.7)'; // Increased base opacity
+  const boxShadow = theme === 'dark' ? '0 0 3px #6366f1, 0 0 6px #6366f1' : '0 0 3px #ffa500, 0 0 6px #ffa500'; // Sharper shadow
+  const opacity = 0.40; // Global opacity increased significantly for visibility
+  const size = 16; // Reduced size slightly for better pointer feel
 
   useEffect(() => {
     const updatePosition = (e) => {
@@ -122,9 +122,9 @@ const CustomCursor = ({ theme }) => {
         left: position.x,
         top: position.y,
         transform: 'translate(-50%, -50%)',
-        width: '40px',
-        height: '40px',
-        opacity: opacity, // Apply global opacity reduction
+        width: `${size}px`,
+        height: `${size}px`,
+        opacity: opacity, // Applied final opacity
         backgroundColor: color,
         boxShadow: boxShadow,
       }}
@@ -485,7 +485,7 @@ const Navbar = ({ theme, toggleTheme }) => {
           {/* 2. Desktop Navigation (Centered) */}
           {/* This container pushes itself to the center by using flex grow on the left/right wrappers */}
           <div className="absolute inset-0 hidden md:flex items-center justify-center">
-            <nav className="space-x-2 text-gray-300">
+            <nav className="space-x-2">
               {navItems.map(item => (
                 <NavLink key={item.id} to={item.id} isLight={isLight}>{item.name}</NavLink>
               ))}
@@ -493,6 +493,7 @@ const Navbar = ({ theme, toggleTheme }) => {
           </div>
 
           {/* 3. Social Icons & Theme Toggle (Right) */}
+          {/* FIX: Ensure padding on the far right by ensuring the parent container uses px-4/sm:px-6/lg:px-8 */}
           <div className="flex items-center space-x-4 z-10">
              <div className="hidden md:flex space-x-3">
                 <a href={PORTFOLIO_DATA.contact.linkedin} target="_blank" rel="noopener noreferrer" className={`p-2 transition-colors rounded-full ${isLight ? 'text-gray-600 hover:text-teal-600 bg-gray-100' : 'text-gray-400 hover:text-teal-400 bg-gray-700/50'}`}>
@@ -580,7 +581,7 @@ const HeroSection = ({ isLight }) => {
         <div className="flex flex-col items-center justify-center flex-grow"> {/* Container for main content */}
             {/* Main Name with Gradient - FIXED TO SINGLE LINE */}
             <h1 className="text-6xl sm:text-8xl lg:text-9xl font-extrabold leading-tight mb-4 animate-fade-in whitespace-nowrap">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-pink-500 inline-block">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-pink-500 inline-block mt-6">
                 {PORTFOLIO_DATA.name.split(' ')[0]}
             </span>
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-indigo-500 inline-block ml-4">
@@ -687,6 +688,7 @@ const AboutSection = ({ isLight }) => {
                             <p>
                             {PORTFOLIO_DATA.aboutContent.description}
                             </p>
+                          
                         </div>
 
                         {/* My Journey Timeline */}
@@ -760,7 +762,7 @@ const CyclingSkillCard = ({ skill, isActive, isLight }) => {
     return (
         <animated.div 
             style={{ opacity, transform }} 
-            className={`absolute top-0 left-0 right-0 p-10 ${cardBg} rounded-3xl shadow-2xl border border-purple-500/50 backdrop-blur-md transition-all duration-500 flex flex-col items-center text-center`}
+            className={`absolute top-0 left-0 right-0 p-10  ${cardBg} rounded-3xl shadow-2xl border border-purple-500/50 backdrop-blur-md transition-all duration-500 flex flex-col items-center text-center`}
         >
             {/* Neon Icon */}
             <div className={`p-4 rounded-full mb-4 transition-all duration-300 
@@ -860,7 +862,7 @@ const SkillsSection = ({ isLight }) => {
                 </p>
 
                 {/* Top Center Cycling Card */}
-                <div className="relative h-64 flex justify-center mb-20 max-w-2xl mx-auto">
+                {/* <div className="relative h-64 flex justify-center mb-20 max-w-2xl mx-auto">
                     {PORTFOLIO_DATA.skills
                         .filter(skill => orderedSkillIds.includes(skill.id))
                         .map(skill => (
@@ -871,7 +873,7 @@ const SkillsSection = ({ isLight }) => {
                                 isLight={isLight}
                             />
                         ))}
-                </div>
+                </div> */}
 
                 {/* Dynamic Grid of Skill Progress Bars */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -896,7 +898,7 @@ const EducationSection = ({ isLight }) => {
   return (
     <section id="education" className={`py-20 ${sectionBg} relative z-10 min-h-screen flex items-center`}>
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <SectionTitle isLight={isLight}>My Education & Journey</SectionTitle>
+            <SectionTitle isLight={isLight}>My Education </SectionTitle>
             
             <div className="flex flex-col lg:flex-row items-start justify-center">
                 {/* Left Side: Timeline/Navigation (Simulating the scroll effect) */}
